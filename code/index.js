@@ -126,27 +126,34 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 //Відображення складу
+
+let initialLengthTopping = 0;
+let initialLengthSauce = 0;
 function show(pizza) {
   // topping
   const topping = document.querySelector("#topping");
 
   const indexTopping = pizza.toppings.length; //длина массива топпингов
-  let count_toppings_length = 0; //счетчик размера массива топпингов
   let countTop = 0; //счетчик количества добавленного топинга
-  let topping_name = pizza.toppings[indexTopping - 1].name; //имя последнего элемнта массива
-  let topping_html = `<div>${topping_name} - ${++countTop}</div>`;
 
   //соус
   const sauce = document.querySelector("#sauce");
 
   const indexSauce = pizza.sauce.length;
-  let count_sauce_length = 0;
-  let countSau = 0;
-  let sauce_name = pizza.sauce[indexSauce - 1].name;
-  let sauce_html = `<div>${sauce_name} - ${++countSau}</div>`;
+  let countSauce = 0; //счетчик количества добавленного соуса
 
-  topping.insertAdjacentHTML("afterbegin", topping_html);
-  sauce.insertAdjacentHTML("afterbegin", sauce_html);
+  if (indexTopping > initialLengthTopping) {
+    let topping_name = pizza.toppings[indexTopping - 1].name; //имя последнего элемнта массива
+    let topping_html = `<div>${topping_name} - ${++countTop}</div>`;
+    initialLengthTopping = indexTopping;
+    topping.insertAdjacentHTML("beforeend", topping_html);
+  } else if (indexSauce > initialLengthSauce) {
+    let sauce_name = pizza.sauce[indexSauce - 1].name;
+    let sauce_html = `<div>${sauce_name} - ${++countSauce}</div>`;
+    initialLengthSauce = indexSauce;
+
+    sauce.insertAdjacentHTML("beforeend", sauce_html);
+  }
 
   const price = document.querySelector("#price");
   //общая цена
@@ -195,12 +202,15 @@ window.addEventListener("DOMContentLoaded", () => {
     //(6) [undefined, undefined, undefined, 'telya', undefined, undefined]
     const indexToping = getTopping(id).indexOf(id); //узнаем индекс топинга с названием, соответствующим id, в массиве топингов
     //3
+    const arrSauce = getSauce(id); //массив с соусами
     const indexSauce = getSauce(id).indexOf(id);
 
     if (arrTopping.filter((el) => el !== undefined)[0]) {
       //добавляем выбранные соусы в массив топингов в объекте пицца
       pizza.toppings.push(price.toping[indexToping]);
-    } else pizza.sauce.push(price.sauce[indexSauce]);
+    } else if (arrSauce.filter((el) => el !== undefined)[0]) {
+      pizza.sauce.push(price.sauce[indexSauce]);
+    }
     show(pizza);
   });
 });
