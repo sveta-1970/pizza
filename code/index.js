@@ -141,28 +141,30 @@ function show(pizza) {
 
   const indexSauce = pizza.sauce.length;
   let countSauce = 0; //счетчик количества добавленного соуса
+  let topingPrice = 0;
+  let saucePrice = 0;
 
   if (indexTopping > initialLengthTopping) {
     let topping_name = pizza.toppings[indexTopping - 1].name; //имя последнего элемнта массива
     let topping_html = `<div>${topping_name} - ${++countTop}</div>`;
     initialLengthTopping = indexTopping;
+    topingPrice = pizza.toppings[indexTopping - 1].price;
+    console.log(topingPrice);
+
     topping.insertAdjacentHTML("beforeend", topping_html);
   } else if (indexSauce > initialLengthSauce) {
     let sauce_name = pizza.sauce[indexSauce - 1].name;
     let sauce_html = `<div>${sauce_name} - ${++countSauce}</div>`;
     initialLengthSauce = indexSauce;
+    saucePrice = pizza.sauce[indexSauce - 1].price;
+    console.log(saucePrice);
 
     sauce.insertAdjacentHTML("beforeend", sauce_html);
   }
 
   const price = document.querySelector("#price");
   //общая цена
-  price.innerText = pizza.size;
-
-  /* +
-    pizza.toppings[indexTopping - 1].price +
-    pizza.sauce[indexSauce - 1].price;
-    */
+  price.innerText = pizza.size + topingPrice + saucePrice;
 }
 
 //Перетягування.
