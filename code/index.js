@@ -125,6 +125,19 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+//Функція перерахунку ціни піци, в залежності від доданих топінгів та соусів
+function validPrice(pizza) {
+  const priceTopping = pizza.toppings.reduce((a, b) => {
+    return a + b.price;
+  }, 0);
+
+  const priceSauce = pizza.sauce.reduce((a, b) => {
+    return a + b.price;
+  }, 0);
+
+  return pizza.size + priceTopping + priceSauce;
+}
+
 //Відображення складу
 
 let initialLengthTopping = 0;
@@ -149,7 +162,6 @@ function show(pizza) {
     let topping_html = `<div>${topping_name} - ${++countTop}</div>`;
     initialLengthTopping = indexTopping;
     topingPrice = pizza.toppings[indexTopping - 1].price;
-    console.log(topingPrice);
 
     topping.insertAdjacentHTML("beforeend", topping_html);
   } else if (indexSauce > initialLengthSauce) {
@@ -157,14 +169,13 @@ function show(pizza) {
     let sauce_html = `<div>${sauce_name} - ${++countSauce}</div>`;
     initialLengthSauce = indexSauce;
     saucePrice = pizza.sauce[indexSauce - 1].price;
-    console.log(saucePrice);
 
     sauce.insertAdjacentHTML("beforeend", sauce_html);
   }
 
-  const price = document.querySelector("#price");
   //общая цена
-  price.innerText = pizza.size + topingPrice + saucePrice;
+  const price = document.querySelector("#price");
+  price.innerText = validPrice(pizza);
 }
 
 //Перетягування.
