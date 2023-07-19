@@ -179,11 +179,10 @@ function show(pizza) {
     });
 
     //перебираем массив с отобранными элементами и их количеством
-    const topping_html = selectElTop.forEach((el) => {
-      `<div>${el.name} ${el.quantity}</div>`;
-    });
-
-    topping.insertAdjacentHTML("beforeend", topping_html);
+    const topping_html = selectElTop.map(
+      (el) => `<div> ${el.name} - ${el.quantity} </div>`
+    );
+    topping.innerHTML = topping_html;
   } else if (indexSauce > initialLengthSauce) {
     //let sauce_name = pizza.sauce[indexSauce - 1].name;
     //let sauce_html = `<div>${sauce_name} - ${++countSauce}</div>`;
@@ -210,10 +209,10 @@ function show(pizza) {
     });
 
     //перебираем массив с отобранными элементами и их количеством
-    const sauce_html = selectElSau.forEach((el) => {
-      `<div>${el.name} ${el.quantity}</div>`;
-    });
-    sauce.insertAdjacentHTML("beforeend", sauce_html);
+    const sauce_html = selectElSau.map(
+      (el) => `<div>${el.name} - ${el.quantity}</div>`
+    );
+    sauce.innerHTML = sauce_html;
   }
 
   //общая цена
