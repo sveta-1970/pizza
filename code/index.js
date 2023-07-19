@@ -145,31 +145,74 @@ let initialLengthSauce = 0;
 function show(pizza) {
   // topping
   const topping = document.querySelector("#topping");
-
   const indexTopping = pizza.toppings.length; //длина массива топпингов
-  let countTop = 0; //счетчик количества добавленного топинга
+  let topingPrice = 0;
 
   //соус
   const sauce = document.querySelector("#sauce");
-
   const indexSauce = pizza.sauce.length;
-  let countSauce = 0; //счетчик количества добавленного соуса
-  let topingPrice = 0;
   let saucePrice = 0;
 
   if (indexTopping > initialLengthTopping) {
-    let topping_name = pizza.toppings[indexTopping - 1].name; //имя последнего элемнта массива
-    let topping_html = `<div>${topping_name} - ${++countTop}</div>`;
+    //let topping_name = pizza.toppings[indexTopping - 1].name; //имя последнего элемнта массива
+    //let topping_html = `<div>${topping_name} - ${++countTop}</div>`;
     initialLengthTopping = indexTopping;
-    topingPrice = pizza.toppings[indexTopping - 1].price;
+    topingPrice = pizza.toppings[indexTopping - 1].price; //цена добавленного топинга
+
+    //рассчитываем количество добавленного топинга
+    const selectToping = pizza.toppings;
+    const selectElTop = []; //масив, куди ми додаємо властивість з кількістю
+    selectToping.forEach((topping) => {
+      //метод findIndex() возвращает индекс первого элемента, удовлетворяющего функции. если нет таких элементов, возвращается -1
+      const searchElement = selectElTop.findIndex((el) => {
+        return el.name === topping.name;
+      });
+
+      if (searchElement !== -1) {
+        selectElTop[searchElement].quantity++;
+      } else {
+        selectElTop.push({
+          ...topping,
+          quantity: 1,
+        });
+      }
+    });
+
+    //перебираем массив с отобранными элементами и их количеством
+    const topping_html = selectElTop.forEach((el) => {
+      `<div>${el.name} ${el.quantity}</div>`;
+    });
 
     topping.insertAdjacentHTML("beforeend", topping_html);
   } else if (indexSauce > initialLengthSauce) {
-    let sauce_name = pizza.sauce[indexSauce - 1].name;
-    let sauce_html = `<div>${sauce_name} - ${++countSauce}</div>`;
+    //let sauce_name = pizza.sauce[indexSauce - 1].name;
+    //let sauce_html = `<div>${sauce_name} - ${++countSauce}</div>`;
     initialLengthSauce = indexSauce;
     saucePrice = pizza.sauce[indexSauce - 1].price;
 
+    //рассчитываем количество добавленного соуса
+    const selectSauce = pizza.sauce;
+    const selectElSau = []; //масив, куди ми додаємо властивість з кількістю
+    selectSauce.forEach((sauce) => {
+      //метод findIndex() возвращает индекс первого элемента, удовлетворяющего функции. если нет таких элементов, возвращается -1
+      const searchElement = selectElSau.findIndex((el) => {
+        return el.name === sauce.name;
+      });
+
+      if (searchElement !== -1) {
+        selectElSau[searchElement].quantity++;
+      } else {
+        selectElSau.push({
+          ...sauce,
+          quantity: 1,
+        });
+      }
+    });
+
+    //перебираем массив с отобранными элементами и их количеством
+    const sauce_html = selectElSau.forEach((el) => {
+      `<div>${el.name} ${el.quantity}</div>`;
+    });
     sauce.insertAdjacentHTML("beforeend", sauce_html);
   }
 
